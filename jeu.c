@@ -47,8 +47,10 @@ void clrscr()
 
 int tourJoueur(int PM){
     int choix;
+    printf("\n");
     printf("1:ATT 2:DEF 3:SORT 4:GERISON 5:CLEAR_CONSOLE : ");
     scanf("%d",&choix);
+    printf("\n");
 
     if (choix == 3 && PM<10)
     {
@@ -66,6 +68,29 @@ int tourJoueur(int PM){
     }
 }
 
+void histoire(int lieux){
+    switch (lieux)
+    {
+    case 0:
+        printf("Elas vous repartez au combat un autre groupe de monstre vous attend ! \n\n");
+        break;
+    case 1:
+        printf("Votre envie de combat continue de grandir ! \n\n");
+        break;
+    case 2:
+        printf("La grande nuit continue malgres vos blessures vous continuez \n\n");
+        break;
+    case 3:
+        printf("La puissance afflue en vous mais les ennemies devant le sont encore plus ! \n\n");
+        break;
+    case 4:
+        printf("");
+        break;
+
+    default:
+        break;
+    }
+}
 
 
 int main(void){
@@ -80,6 +105,10 @@ int main(void){
     int gameC;
     gameC = 1;
     int nb_mort;
+    int Ahistoire;
+    Ahistoire = 0;
+    int diff;
+    diff = 1;
 
     //variable des monstre
     monstre demon_inferieur = {15, 4, 6};
@@ -95,13 +124,10 @@ int main(void){
     //PlayerStats
     joueur player = {5000,5,20,15};
 
-    /*génère les monstres
-    for (int i = 0; i < 3; i++)
-    {
-        combat[i] = geneCombat(tableMonstre, 0, 4, 1);
-        //printf("PV:%d ATT:%d ATTS:%d\n", combat[i].pv, combat[i].att, combat[i].attsort);
-    }
-    */
+    //Histoire
+    printf("Vous etes un aventurier en quete d'aventure\nBienvenue dans la vallee des demons ! \n\n");
+
+
     while(game){
 
         //Demande du joueur
@@ -113,13 +139,17 @@ int main(void){
         //GENE MOB
         for (int i = 0; i < 3; i++){
             combat[i] = geneCombat(tableMonstre, 0, 4, 1);
+            combat[i].pv = combat[i].pv * diff;
+            combat[i].att = combat[i].att * diff;
+            combat[i].attsort = combat[i].attsort * diff;
+            printf("Monstre n%d a %dPV !\n",i, combat[i].pv);
         }
-
+        printf("\n\n");
 
         while (gameC)
         { 
             choix = tourJoueur(player.PM);
-            if (poison >0)
+            if (poison >0 && choix!= 0)
             {
                 player.pv-=poison;
                 printf("vous soufrez du poison il vous reste %dPv\n",player.pv);
@@ -130,9 +160,10 @@ int main(void){
                 choix = tourJoueur(player.PM);
             }
             if (choix == 1){
-
+                printf("\n");
                 printf("Choisez votre cible(de 0 a 2): ");
                 scanf("%d",&Cible);
+                printf("\n");
                 if (Cible>2)
                 {
                     Cible = 2;
@@ -145,14 +176,17 @@ int main(void){
 
             if (choix == 2)
             {
+                printf("\n");
                 printf("Vous vous defendez !\n");
                 defOn++;
 
             }
             if (choix == 3)
             {
+                printf("\n");
                 printf("Choisez votre cible(de 0 a 2): ");
                 scanf("%d", &Cible);
+                printf("\n");
                 if (Cible > 2)
                 {
                     Cible = 2;
@@ -181,8 +215,6 @@ int main(void){
                             if (nb_mort == 3)
                             {
                                 gameC = 0;
-                                clrscr();
-                                printf("Tous les monstre sont mort !\n");
                             }
                             
                         }
@@ -213,7 +245,19 @@ int main(void){
                     }
                 }   
             }      
-        }	
+        }
+
+        clrscr();
+        printf("Tous les monstre sont mort !\n");
+        printf("Vous vous reposez pres du feu, votre vie est augmenter de 600 !\nVotre attaque augmente de 10 et vos sort de 60 ! \n");
+        player.pv += 600; player.attsort += 60;player.att += 10;poison = 0;
+        
+        printf("\n\n");
+        histoire(Ahistoire);
+        Ahistoire++;
+        diff++;
+        gameC = 1;
+
     }    
 /*
         if (poison >0)
