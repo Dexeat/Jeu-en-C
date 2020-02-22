@@ -1,7 +1,7 @@
-  
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <unistd.h>
 
 //structure pour les monstre
 struct Monstre
@@ -266,6 +266,6 @@ int main(void){
 
     }    
 
-getchar();
+sleep(20);
 return 0;
 }
